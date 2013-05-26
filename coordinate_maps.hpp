@@ -36,7 +36,7 @@ struct z_map{
 struct basic_map{
 	unsigned int row_size, col_size;
 
-	basic_map(unsigned int row_size, unsigned int col_size): row_size(row_size) {}
+	basic_map(unsigned int row_size, unsigned int col_size): row_size(row_size), col_size(col_size) {}
 
 	unsigned int operator()(unsigned int x, unsigned int y){
 		return y*row_size+x;

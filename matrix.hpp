@@ -1,9 +1,11 @@
 #include "coordinate_maps.hpp"
 
 #include <vector>
+#include <algorithm>
 #include <cstddef>
 using std::size_t;
 using std::vector;
+using std::copy;
 
 template<typename coord_map, typename val_t=double>
 struct matrix{
@@ -15,14 +17,44 @@ struct matrix{
 		data.resize(cmap.max_index());
 	}
 
-	val_t operator()(size_t x, size_t y){
+	//template<typename ot>
+	matrix(vector<vector<val_t>> contents): x_size(contents[0].size()), y_size(contents.size()), cmap(x_size,y_size){
+		data.resize(cmap.max_index());
+		for(int y=0;y<y_size;y++){
+			for(int x=0;x<x_size;x++){
+				data[cmap(x,y)]=contents[y][x];
+			}
+		}
+	}
+
+	val_t& operator()(size_t x, size_t y){
 		unsigned int i=cmap(x,y);
 		return data[i];
 	}
 
+	size_t size(){
+		return data.size();
+	}
+
+	size_t get_x_size(){
+		return x_size;
+	}
+
+	size_t get_y_size(){
+		return y_size;
+	}
+
 	template<typename other_t>
-	//should this be pass by reference?
+	//should this be pass by reference for rhs?
 	matrix& operator=(other_t rhs){
-		
+		data.resize(rhs.size());
+		x_size=rhs.get_x_size();
+		y_size=rhs.get_y_size();
+		for(int x=0;x<x_size;x++){
+			for(int y=0;y<y_size;y++){
+				(*this)(x,y)=rhs(x,y);
+			}
+		}
+		return *this;
 	}
 };
