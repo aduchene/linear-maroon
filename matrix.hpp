@@ -58,3 +58,31 @@ struct matrix{
 		return *this;
 	}
 };
+
+template<typename left_t, typename right_t>
+struct mat_add{
+	left_t lhs;
+	right_t rhs;
+	mat_add(left_t lhs, right_t rhs): lhs(lhs), rhs(rhs) {}
+
+	double operator()(size_t x, size_t y){
+		return lhs(x,y)+rhs(x,y);
+	}
+
+	size_t size(){
+		return lhs.size();
+	}
+
+	size_t get_x_size(){
+		return lhs.get_x_size();
+	}
+
+	size_t get_y_size(){
+		return lhs.get_y_size();
+	}
+};
+
+template<typename lhs_t, typename rhs_t>
+mat_add<lhs_t, rhs_t> operator+(lhs_t l, rhs_t r){
+	return mat_add<lhs_t, rhs_t>(l, r);
+}
