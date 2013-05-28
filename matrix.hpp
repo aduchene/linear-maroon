@@ -82,7 +82,35 @@ struct mat_add{
 	}
 };
 
+
 template<typename lhs_t, typename rhs_t>
 mat_add<lhs_t, rhs_t> operator+(lhs_t l, rhs_t r){
 	return mat_add<lhs_t, rhs_t>(l, r);
+}
+
+template<typename mat_t>
+struct mat_transpose{
+	mat_t mat;
+	mat_transpose(mat_t m): mat(m) {}
+
+	double operator()(size_t x, size_t y){
+		return mat(y,x);
+	}
+
+	size_t size(){
+		return mat.size();
+	}
+
+	size_t get_x_size(){
+		return mat.get_x_size();
+	}
+
+	size_t get_y_size(){
+		return mat.get_y_size();
+	}
+};
+
+template<typename mat_t>
+mat_transpose<mat_t> transpose(mat_t m){
+	return mat_transpose<mat_t>(m);
 }
