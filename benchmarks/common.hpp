@@ -1,7 +1,15 @@
-#include "../matrix.hpp"
-
+#include <chrono>
 #include <iostream>
 using namespace std;
+
+template<typename F>
+void benchmark(F task, string name){
+	auto start=chrono::high_resolution_clock::now();
+	task();
+	auto end=chrono::high_resolution_clock::now();
+	cout<<name<<" took nanoseconds:"<<endl;	
+	cout<<chrono::duration_cast<chrono::nanoseconds>(end-start).count()<<endl;
+}
 
 template<typename T>
 void print_mat(T mat){
@@ -19,13 +27,4 @@ void print_mat(T mat){
 	// 	cout<<elem<<" ";
 	// }
 	cout<<endl;
-}
-
-int main(){
-	matrix<basic_map> bm={{{1,2},{3,4}}};
-	matrix<basic_map> bm2={{{6,2},{3,8}}};
-	bm=transpose(bm);
-	print_mat(bm);
-	print_mat(transpose(bm));
-	return 0;
 }

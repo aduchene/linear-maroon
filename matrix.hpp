@@ -47,14 +47,19 @@ struct matrix{
 	template<typename other_t>
 	//should this be pass by reference for rhs?
 	matrix& operator=(other_t rhs){
-		data.resize(rhs.size());
-		x_size=rhs.get_x_size();
-		y_size=rhs.get_y_size();
+		vector<val_t> tdata(rhs.size());
+		size_t tx_size=rhs.get_x_size();
+		size_t ty_size=rhs.get_y_size();
+		coord_map tmap(tx_size,ty_size);
 		for(int x=0;x<x_size;x++){
 			for(int y=0;y<y_size;y++){
-				(*this)(x,y)=rhs(x,y);
+				tdata[tmap(x,y)]=rhs(x,y);
 			}
 		}
+		data=std::move(tdata);
+		cmap=std::move(tmap);
+		x_size=tx_size;
+		y_size=ty_size;
 		return *this;
 	}
 };
